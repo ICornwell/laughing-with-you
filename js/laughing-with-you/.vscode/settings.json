@@ -1,0 +1,6 @@
+{
+  "jestRunIt.jestConfigPath": "./jest.config.cjs",
+  "jestRunIt.customSnapshotMatchers": [
+    
+  ]
+}

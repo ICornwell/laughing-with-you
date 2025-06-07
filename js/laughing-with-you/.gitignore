@@ -1,0 +1,8 @@
+dist
+coverage
+
+# Ignore root node_modules only
+/node_modules/
+
+
+
