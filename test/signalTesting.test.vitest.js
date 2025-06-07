@@ -11,12 +11,7 @@ describe('Signal Testing', () => {
   
   beforeEach(() => {
     // Reset all signals
-    // Detect which testing framework we're using
-    if (typeof jest !== 'undefined') {
-      jest.spyOn(console, 'log').mockImplementation(() => {});
-    } else {
-      vi.spyOn(console, 'log').mockImplementation(() => {});
-    }
+    vi.spyOn(console, 'log').mockImplementation(() => {});
   });
   
   it('should create a signal environment with handler methods', () => {

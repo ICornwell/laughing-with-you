@@ -444,75 +444,80 @@ The library provides several patterns for managing test isolation:
 
 ## Example: Testing with Both Frameworks
 
-This example demonstrates how to write the same test for both Jest and Vitest:
+This example demonstrates how to write the same test for both Jest and Vitest - basically, you can usually just swap jest. for vi. or vice-versa:
 
 ### Jest Version (`example.test.jest.js`)
 
 ```javascript
-import { jest, describe, test, expect } from '@jest/globals';
-import { createLogger } from '../src/logger.js';
+// Test for signal testing with Jest
+import { createSignalTestEnv, createSignalTest } from '../src/signalTesting.js';
+import { setUpLocalDeps, getLocalDeps } from '../src/asyncLocalDeps.js';
+import { waitFor, signalDone } from '../src/waitForSignals.js';
+import { jest } from '@jest/globals';
 import { ensureALSInitialized } from './testUtils/als-utils.js';
 
-describe('Logger functionality', () => {
-  let logger;
-  let mockConsole;
+describe('Signal Testing', () => {
+  beforeAll(() => {
+    // Initialize the async local storage with empty dependencies
+    ensureALSInitialized();
+  });
   
   beforeEach(() => {
-    // Initialize AsyncLocalStorage
-    ensureALSInitialized();
-    
-    // Create isolated console for testing
-    mockConsole = {
-      log: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn()
-    };
-    
-    // Create logger with mock console
-    logger = createLogger({ console: mockConsole });
+    // Reset all signals and mock console.log
+    jest.spyOn(console, 'log').mockImplementation(() => {});
   });
-  
-  test('should log messages with proper level', () => {
-    logger.info('Test message');
-    expect(mockConsole.info).toHaveBeenCalledWith(expect.stringContaining('Test message'));
-  });
-});
 ```
 
 ### Vitest Version (`example.test.vitest.js`)
 
 ```javascript
-import { describe, test, expect, beforeEach, vi } from 'vitest';
-import { createLogger } from '../src/logger.js';
-import { setUpLocalDeps } from '../src/asyncLocalDeps.js';
+// Test for signal testing
+import { createSignalTestEnv, createSignalTest } from '../src/signalTesting';
+import { setUpLocalDeps, getLocalDeps } from '../src/asyncLocalDeps';
+import { waitFor, signalDone } from '../src/waitForSignals';
 
-describe('Logger functionality', () => {
-  let logger;
-  let mockConsole;
+describe('Signal Testing', () => {
+  beforeAll(() => {
+    // Initialize the async local storage with empty dependencies
+    setUpLocalDeps();
+  });
   
   beforeEach(() => {
-    // Initialize AsyncLocalStorage (Vitest handles ALS better)
-    setUpLocalDeps();
-    
-    // Create isolated console for testing (using Vitest's spying)
-    mockConsole = {
-      log: vi.fn(),
-      info: vi.fn(),
-      warn: vi.fn(),
-      error: vi.fn()
-    };
-    
-    // Create logger with mock console
-    logger = createLogger({ console: mockConsole });
+    // Reset all signals
+    vi.spyOn(console, 'log').mockImplementation(() => {});
   });
-  
-  test('should log messages with proper level', () => {
-    logger.info('Test message');
-    expect(mockConsole.info).toHaveBeenCalledWith(expect.stringContaining('Test message'));
-  });
-});
 ```
+
+### Sometimes things are not exactly the same...
+
+With vitest:
+```javascript
+ test('spy identity test', () => {
+    const spy1 = vi.spyOn(console, 'log');
+    const spy2 = vi.spyOn(console, 'log');
+
+    console.log('Test');
+
+    // this is different from jest, where both spies would show as called
+    expect(spy2).toHaveBeenCalled(); // This should pass
+    expect(spy1).not.toHaveBeenCalled(); // This should FAIL!
+  });
+```
+With jest:
+```javascript
+ test('spy identity test', () => {
+    const spy1 = jest.spyOn(console, 'log');
+    const spy2 = jest.spyOn(console, 'log');
+
+    console.log('Test');
+
+    // this is different from vitest, where it would fail
+    // where spy1 would not show as called
+    expect(spy1).toHaveBeenCalled(); // This should pass
+    expect(spy2).toHaveBeenCalled(); // This should pass too
+  });
+```
+The vitest implementation of the jest API is pretty damn near compatible - there were some cases where everything ran in vitest, and the tests passed individually in Jest, but the fixture failed, as Jest didn't reset ALS contexts like vitest did. I guess Jest came first, so vitest is wrong, but their approach felt more intuitive. The above example? Either could be right, but maybe vitest is wrong.
 
 ### Running Tests with Both Frameworks
 
