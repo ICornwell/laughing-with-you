@@ -490,34 +490,7 @@ describe('Signal Testing', () => {
 
 ### Sometimes things are not exactly the same...
 
-With vitest:
-```javascript
- test('spy identity test', () => {
-    const spy1 = vi.spyOn(console, 'log');
-    const spy2 = vi.spyOn(console, 'log');
-
-    console.log('Test');
-
-    // this is different from jest, where both spies would show as called
-    expect(spy2).toHaveBeenCalled(); // This should pass
-    expect(spy1).not.toHaveBeenCalled(); // This should FAIL!
-  });
-```
-With jest:
-```javascript
- test('spy identity test', () => {
-    const spy1 = jest.spyOn(console, 'log');
-    const spy2 = jest.spyOn(console, 'log');
-
-    console.log('Test');
-
-    // this is different from vitest, where it would fail
-    // where spy1 would not show as called
-    expect(spy1).toHaveBeenCalled(); // This should pass
-    expect(spy2).toHaveBeenCalled(); // This should pass too
-  });
-```
-The vitest implementation of the jest API is pretty damn near compatible - there were some cases where everything ran in vitest, and the tests passed individually in Jest, but the fixture failed, as Jest didn't reset ALS contexts like vitest did. I guess Jest came first, so vitest is wrong, but their approach felt more intuitive. The above example? Either could be right, but maybe vitest is wrong.
+The vitest implementation of the jest API is pretty damn near compatible - there were some cases where everything ran in vitest, and the tests passed individually in Jest, but the fixture failed, as Jest didn't reset ALS contexts like vitest did. I guess Jest came first, so vitest is wrong, but their approach felt more intuitive.
 
 ### Running Tests with Both Frameworks
 

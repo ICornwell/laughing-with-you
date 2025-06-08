@@ -289,8 +289,6 @@ describe('Logger', () => {
 
     console.log('Test');
 
-    // this is different from vitest, where it would fail
-    // where spy1 would not show as called
     expect(spy1).toHaveBeenCalled(); // This should pass
     expect(spy2).toHaveBeenCalled(); // This should pass too
   });

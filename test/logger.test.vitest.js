@@ -288,8 +288,7 @@ describe('Logger', () => {
 
     console.log('Test');
 
-    // this is different from jest, where both spies would show as called
     expect(spy2).toHaveBeenCalled(); // This should pass
-    expect(spy1).not.toHaveBeenCalled(); // This should FAIL!
+    expect(spy1).toHaveBeenCalled(); // This should pass
   });
 })

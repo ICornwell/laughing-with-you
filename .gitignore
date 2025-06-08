@@ -4,5 +4,8 @@ coverage
 # Ignore root node_modules only
 /node_modules/
 
+# Ignore yarn.lock, because github loves npm for CI
+yarn.lock
+
 
 
