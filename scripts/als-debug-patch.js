@@ -3,15 +3,20 @@
  * It's designed to be run with NODE_OPTIONS="--require ./scripts/als-debug-patch.js"
  * to instrument the module for debugging without modifying the source code.
  */
-const path = require('path');
-const fs = require('fs');
-const module = require('module');
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { prototype } from 'module';
+
+// no __dirname or __filename in ES modules, so we need to resolve them
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 // The original require function
-const originalRequire = module.prototype.require;
+const originalRequire = prototype.require;
 
 // Patched require function
-module.prototype.require = function(id) {
+prototype.require = function(id) {
   const result = originalRequire.call(this, id);
   
   // Only patch our specific module

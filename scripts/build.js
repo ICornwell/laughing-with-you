@@ -1,7 +1,13 @@
 // @ts-check
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { join } from 'path';
+import { execSync } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// no __dirname or __filename in ES modules, so we need to resolve them
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 /**
  * Simple build script to create TypeScript declarations
@@ -10,9 +16,9 @@ function build() {
   console.log('Building library...');
   
   // Create lib directory
-  const libDir = path.join(__dirname, 'lib');
-  if (!fs.existsSync(libDir)) {
-    fs.mkdirSync(libDir, { recursive: true });
+  const libDir = join(__dirname, 'lib');
+  if (!existsSync(libDir)) {
+    mkdirSync(libDir, { recursive: true });
   }
   
   // Copy source files
@@ -32,13 +38,13 @@ function createTypeDeclarations() {
   console.log('Creating type declarations...');
   
   // Create the lib directory and subdirectories if they don't exist
-  const libDir = path.join(__dirname, '..', 'lib');
-  if (!fs.existsSync(libDir)) {
-    fs.mkdirSync(libDir, { recursive: true });
+  const libDir = join(__dirname, '..', 'lib');
+  if (!existsSync(libDir)) {
+    mkdirSync(libDir, { recursive: true });
   }
   
   // asyncLocalDeps.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/asyncLocalDeps.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/asyncLocalDeps.d.ts'), `
 /**
  * Run a function with specific dependencies in AsyncLocalStorage
  */
@@ -71,7 +77,7 @@ export function getTestContext(): Record<string, any> | null;
 `);
 
   // analytics.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/analytics.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/analytics.d.ts'), `
 export interface AnalyticsCallData {
   args: any[];
   result: any;
@@ -114,7 +120,7 @@ export const analytics: Analytics;
 `);
 
   // proxyDeps.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/proxyDeps.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/proxyDeps.d.ts'), `
 /**
  * Create a proxy for a dependency
  */
@@ -122,7 +128,7 @@ export function proxyDep<T extends object>(dep: T, name: string): T;
 `);
 
   // signalTesting.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/signalTesting.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/signalTesting.d.ts'), `
 /**
  * Signal handler for coordinating asynchronous tests
  */
@@ -149,7 +155,7 @@ export function createSignalTest(
 `);
 
   // mockTimer.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/mockTimer.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/mockTimer.d.ts'), `
 export interface Timer {
   id: number;
   callback: Function;
@@ -202,7 +208,7 @@ export function useMockTimer(): MockTimer;
 `);
 
   // depSnapshot.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/depSnapshot.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/depSnapshot.d.ts'), `
 export interface DiffResult {
   added: string[];
   removed: string[];
@@ -250,7 +256,7 @@ export function withSnapshot<T>(fn: () => Promise<T> | T): Promise<T>;
 `);
 
   // logger.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/logger.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/logger.d.ts'), `
 /**
  * Log levels
  */
@@ -374,7 +380,7 @@ export function getLogger(): Logger;
 `);
 
   // resourceManager.d.ts
-  fs.writeFileSync(path.join(__dirname, '..', 'lib/resourceManager.d.ts'), `
+  writeFileSync(join(__dirname, '..', 'lib/resourceManager.d.ts'), `
 /**
  * A class to manage resources that need to be cleaned up after tests
  */
