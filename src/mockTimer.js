@@ -1,4 +1,6 @@
 // Time mocking utilities for testing
+// This module has been updated to work in both browser and CI environments,
+// handling cases where performance.now might be read-only or not available
 import { addLocalDeps } from './asyncLocalDeps';
 
 /**
@@ -16,7 +18,20 @@ export function useMockTimer() {
   const originalSetInterval = global.setInterval;
   const originalClearInterval = global.clearInterval;
   const originalDateNow = Date.now;
-  const originalPerformanceNow = performance.now;
+  
+  // Check if performance is available in this environment
+  let originalPerformanceNow;
+  let hasPerformance = typeof performance !== 'undefined' && 
+                      typeof performance.now === 'function';
+  
+  if (hasPerformance) {
+    try {
+      originalPerformanceNow = performance.now;
+    } catch (e) {
+      // In some environments, accessing performance.now might throw
+      hasPerformance = false;
+    }
+  }
   
   // Create the timer API
   const mockTimer = {
@@ -63,10 +78,33 @@ export function useMockTimer() {
       };
 
       // Mock Date.now()
-      Date.now = () => currentTime;
+      try {
+        Object.defineProperty(Date, 'now', {
+          value: () => currentTime,
+          writable: true,
+          configurable: true
+        });
+      } catch (error) {
+        // Fallback to direct assignment if defining property fails
+        Date.now = () => currentTime;
+      }
       
       // Mock performance.now()
-      performance.now = () => currentTime;
+      // Only attempt to mock performance.now if it exists
+      if (hasPerformance) {
+        try {
+          // Use Object.defineProperty for read-only properties
+          Object.defineProperty(performance, 'now', {
+            value: () => currentTime,
+            writable: true,
+            configurable: true
+          });
+        } catch (error) {
+          // In some environments (like CI), performance might be non-configurable
+          console.warn('Could not mock performance.now:', error.message);
+          // We still want to continue with the rest of the functionality
+        }
+      }
       
       // Add to local dependencies
       addLocalDeps({ mockTimer });
@@ -80,8 +118,33 @@ export function useMockTimer() {
       global.clearTimeout = originalClearTimeout;
       global.setInterval = originalSetInterval;
       global.clearInterval = originalClearInterval;
-      Date.now = originalDateNow;
-      performance.now = originalPerformanceNow;
+      
+      // Restore Date.now carefully
+      try {
+        Object.defineProperty(Date, 'now', {
+          value: originalDateNow,
+          writable: true,
+          configurable: true
+        });
+      } catch (error) {
+        // Fallback to direct assignment
+        Date.now = originalDateNow;
+      }
+      
+      // Only attempt to restore performance.now if it exists
+      if (hasPerformance && originalPerformanceNow) {
+        try {
+          // Restore original performance.now
+          Object.defineProperty(performance, 'now', {
+            value: originalPerformanceNow,
+            writable: true,
+            configurable: true
+          });
+        } catch (error) {
+          // If we couldn't mock it initially, we don't need to restore it
+          console.warn('Could not restore performance.now:', error.message);
+        }
+      }
     },
 
     /**

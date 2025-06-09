@@ -4,6 +4,10 @@ import { setUpLocalDeps } from '../src/asyncLocalDeps.js';
 import { jest } from '@jest/globals';
 import { ensureALSInitialized } from './testUtils/als-utils.js';
 
+// Check if performance is available in this environment
+const hasPerformance = typeof performance !== 'undefined' && 
+                      typeof performance.now === 'function';
+
 describe('Mock Timer with Jest', () => {
   let mockTimer;
   
@@ -57,15 +61,24 @@ describe('Mock Timer with Jest', () => {
   });
   
   describe('Date and performance API mocking', () => {
-    test('should mock Date.now and performance.now', () => {
+    test('should mock Date.now', () => {
       const initialTime = Date.now();
-      const initialPerf = performance.now();
-      
       mockTimer.advanceTime(1000);
-      
       expect(Date.now()).toBe(initialTime + 1000);
-      expect(performance.now()).toBe(initialPerf + 1000);
     });
+    
+    // Only run performance tests if the API is available
+    if (hasPerformance) {
+      test('should mock performance.now', () => {
+        const initialPerf = performance.now();
+        mockTimer.advanceTime(1000);
+        expect(performance.now()).toBe(initialPerf + 1000);
+      });
+    } else {
+      test.skip('should mock performance.now - SKIPPED (performance API not available)', () => {
+        // This test will be skipped when performance is not available
+      });
+    }
   });
   
   describe('Timer execution order', () => {

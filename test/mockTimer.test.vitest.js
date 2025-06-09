@@ -1,6 +1,11 @@
 // Test for mock timer with Vitest
 import { useMockTimer } from '../src/mockTimer';
 import { setUpLocalDeps } from '../src/asyncLocalDeps';
+import { describe, test, expect, vi, beforeAll, beforeEach, afterEach, it } from 'vitest';
+
+// Check if performance is available in this environment
+const hasPerformance = typeof performance !== 'undefined' && 
+                      typeof performance.now === 'function';
 
 describe('Mock Timer with Vitest', () => {
   let mockTimer;
@@ -103,5 +108,26 @@ describe('Mock Timer with Vitest', () => {
         expect(promiseFn).toHaveBeenCalledTimes(1);
       });
     });
+  });
+  
+  describe('Date and performance API mocking', () => {
+    it('should mock Date.now', () => {
+      const initialTime = Date.now();
+      mockTimer.advanceTime(1000);
+      expect(Date.now()).toBe(initialTime + 1000);
+    });
+    
+    // Only run performance tests if the API is available
+    if (hasPerformance) {
+      it('should mock performance.now', () => {
+        const initialPerf = performance.now();
+        mockTimer.advanceTime(1000);
+        expect(performance.now()).toBe(initialPerf + 1000);
+      });
+    } else {
+      it.skip('should mock performance.now - SKIPPED (performance API not available)', () => {
+        // This test will be skipped when performance is not available
+      });
+    }
   });
 });
