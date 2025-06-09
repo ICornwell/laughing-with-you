@@ -33,9 +33,23 @@
     "test:coverage": "vitest --coverage",
     "test:coverage:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs --coverage",
     "test:coverage:report": "vitest --coverage --reporter=html",
+    "test:ci:simple": "./scripts/simple-ci.sh",
+    "test:ci:simple:jest": "./scripts/simple-ci.sh jest",
+    "test:ci:simple:vitest": "./scripts/simple-ci.sh vitest",
+    "test:docker": "./scripts/docker-ci.sh",
+    "test:problem-tests": "./scripts/debug-problem-tests.sh",
+    "test:als-diagnostics": "node scripts/als-ci-diagnostics.js",
+    "test:als-trace": "node scripts/als-initialization-trace.js",
+    "test:als-debug": "./scripts/debug-als-tests.sh",
+    "test:als-debug:snapshot": "./scripts/debug-als-tests.sh snapshot",
+    "test:als-debug:signal": "./scripts/debug-als-tests.sh signal",
+    "test:ci:debug": "DEBUG=true VERBOSE=true ./scripts/simulate-ci.sh",
+    "test:jest:ci-config": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.ci.cjs",
+    "verify:types": "./scripts/verify-types.sh",
+    "test:full": "npm run test && npm run verify:types",
     "lint": "eslint src",
     "format": "prettier --write \"src/**/*.js\" \"test/**/*.js\" \"examples/**/*.js\"",
-    "prepublishOnly": "npm run test && npm run build"
+    "prepublishOnly": "npm run test:full && npm run build"
   },
   "dependencies": {},
   "devDependencies": {
@@ -52,5 +66,14 @@
   },
   "repository": "git@github.com:icornwell/laughing-with-you.git",
   "author": "IC <ian@smallwalrus.com> + copilot/claude 3.7 sonnet",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "testing",
+    "jest",
+    "vitest",
+    "async-local-storage",
+    "dependency-injection",
+    "mock",
+    "test-utils"
+  ]
 }

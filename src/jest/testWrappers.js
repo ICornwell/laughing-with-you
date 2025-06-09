@@ -7,8 +7,8 @@ export function describeWithLocalDeps (name, fn, timeout = 5000) {
   var capturedDeps = getLocalDeps()
   describe(
     name,
-    async () => {
-      await runWithLocalDeps(capturedDeps, fn, timeout)
+     () => {
+       runWithLocalDeps(capturedDeps, fn, timeout)
     },
     timeout
   )
@@ -65,9 +65,9 @@ export function afterAllWithLocalDeps (fn, timeout = 5000) {
   )
 }
 
-export function testWithLocalDeps (fn, timeout = 5000) {
+export function testWithLocalDeps (name, fn, timeout = 5000) {
   var capturedDeps = getLocalDeps()
-  test(
+  test(name,
     async () => {
       await runWithLocalDeps(capturedDeps, fn, timeout)
     },

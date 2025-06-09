@@ -15,10 +15,43 @@ export function ensureALSInitialized(initialDeps = {}) {
   // Make sure global.__appAls exists
   if (!global.__appAls) {
     global.__appAls = new AsyncLocalStorage();
+    console.log('ALS-Utils: Created new AsyncLocalStorage instance');
   }
   
-  // Set up dependencies
-  setUpLocalDeps(initialDeps);
+  try {
+    // First check if store already exists
+    const store = global.__appAls.getStore();
+    if (store) {
+      // Store exists, update dependencies
+      store.set('dependencies', {
+        ...(store.get('dependencies') || {}),
+        ...initialDeps
+      });
+      return initialDeps;
+    }
+    
+    // No store exists, try runWithLocalDeps
+    return runWithLocalDeps({}, () => {
+      // Now set up dependencies within the context of a store
+      setUpLocalDeps(initialDeps);
+      return initialDeps;
+    });
+  } catch (error) {
+    console.error('ALS-Utils: Error initializing dependencies:', error);
+    
+    try {
+      // First fallback: try enterWith with Map structure
+      global.__appAls.enterWith(new Map([
+        ['testContext', {}],
+        ['dependencies', initialDeps]
+      ]));
+    } catch (nestedError) {
+      console.error('ALS-Utils: First fallback failed, trying direct initialization:', nestedError);
+      
+      // Last resort: direct initialization with just dependencies
+      global.__appAls.enterWith(initialDeps);
+    }
+  }
   
   return initialDeps;
 }

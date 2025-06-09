@@ -43,11 +43,13 @@ function createSnapshot(deps) {
   if (deps) {
     snapshot = deepClone(deps);
   } else {
-    const currentDeps = getLocalDeps();
-    if (currentDeps) {
-      snapshot = deepClone(currentDeps);
-    } else {
-      snapshot = {};
+    try {
+      const currentDeps = getLocalDeps();
+      // Ensure we always have an object even if getLocalDeps returns null/undefined
+      snapshot = currentDeps ? deepClone(currentDeps) : {};
+    } catch (error) {
+      console.error('Error getting local deps for snapshot:', error);
+      snapshot = {}; // Failsafe - always have a valid object
     }
   }
   

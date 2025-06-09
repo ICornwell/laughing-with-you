@@ -1,0 +1,81 @@
+# .gitlab-ci.yml - Example CI configuration for GitLab
+# This can be used as a reference for how to run tests in CI
+
+image: node:18-slim
+
+stages:
+  - setup
+  - test
+  - build
+
+variables:
+  CI: "true"
+  NODE_ENV: "test"
+
+# Cache dependencies between jobs
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - node_modules/
+
+# Job to install dependencies
+setup:
+  stage: setup
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+
+# Job to run Vitest tests
+test:vitest:
+  stage: test
+  needs:
+    - setup
+  script:
+    - npm run test:vitest
+  artifacts:
+    when: always
+    paths:
+      - coverage/
+      - test-results/
+
+# Job to run Jest tests with special CI configuration
+test:jest:
+  stage: test
+  needs:
+    - setup
+  script:
+    - npm run test:jest:ci-config
+  artifacts:
+    when: always
+    reports:
+      junit: test-results/jest/results.xml
+
+# Run diagnostics if needed
+test:diagnostics:
+  stage: test
+  needs:
+    - setup
+  script:
+    - npm run test:als-diagnostics
+    - npm run test:als-trace
+  artifacts:
+    when: always
+    paths:
+      - logs/
+  when: manual
+
+# Build the library
+build:
+  stage: build
+  needs:
+    - test:vitest
+    - test:jest
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - lib/

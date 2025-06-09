@@ -2,7 +2,9 @@
 
 All jesting aside, we're not mocking, we're laughing with you, not at you.
 
-A lightweight testing utility library that helps with dependency injection, mocking, and testing infrastructure for modern JavaScript applications. Works seamlessly with both Jest and Vitest.
+A lightweight testing utility library that helps with dependency injection, mocking, and testing infrastructure for modern JavaScript applications. Works seamlessly with both Jest and Vitest. 
+
+**⚠️ Important Note: Requires Node.js 18 or higher.**
 
 It started with a /very/ light weight DI approach for dependency substitution that uses async local storage to allow async (or subsequent sync) code flows to share a dependency substitution set indepentent of others. It uses javascript Proxy to create a delegation wrapper, with automatic fall-back to the original dependency where no substitution is provided.
 

@@ -1,0 +1,58 @@
+# github-ci.yml - Example GitHub Actions workflow
+# Place this file in .github/workflows/ to use it
+
+name: CI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run Vitest tests
+        run: npm run test:vitest
+      
+      - name: Run Jest tests with CI configuration
+        run: npm run test:jest:ci-config
+      
+      - name: Run AsyncLocalStorage diagnostics
+        run: |
+          npm run test:als-diagnostics
+          npm run test:als-trace
+      
+      - name: Build library
+        run: npm run build
+      
+      - name: Upload diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: diagnostic-logs
+          path: logs/
+      
+      - name: Upload coverage reports
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/

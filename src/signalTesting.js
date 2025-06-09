@@ -46,7 +46,7 @@ export function createSignalTestEnv() {
   };
   
   // Add to local dependencies
-  addLocalDeps({ signals: signalHandler });
+  addLocalDeps({ signals: signalHandler }, true);
   
   return signalHandler;
 }

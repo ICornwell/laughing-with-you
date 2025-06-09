@@ -40,18 +40,38 @@ export async function runWithLocalDeps(deps = {}, callback, timeout = 5000) {
 }
 
 export function setUpLocalDeps (deps = {}) {
-  const store = als.getStore()
+  const store = als.getStore();
+  
   if (store) {
-    // If store already exists, we can just set the dependencies
-    const currentDeps = store.get('dependencies')
-    if (currentDeps) {
-      // If dependencies already exist, merge them
-      deps = { ...currentDeps, ...deps }
+    // If store already exists, handle different possible structures
+    if (store instanceof Map) {
+      // Standard Map structure
+      const currentDeps = store.get('dependencies') || {};
+      store.set('dependencies', { ...currentDeps, ...deps });
+      return;
+    } else if (typeof store === 'object' && store !== null) {
+      // Object structure (fallback case in some environments)
+      store.dependencies = { ...(store.dependencies || {}), ...deps };
+      return;
     }
-    store.set('dependencies', deps)
-    return
+    // For any other structure, fall through to create a new store
   }
-  als.enterWith(new Map([['testContext', {}], ['dependencies', deps]]))
+  
+  // No store or unhandled store type, create a new one
+  try {
+    // Preferred method with Map structure
+    als.enterWith(new Map([['testContext', {}], ['dependencies', deps]]));
+  } catch (error) {
+    console.error('Error setting up local deps with Map structure:', error);
+    
+    // Fallback to simple object for environments that don't support Map in ALS
+    try {
+      als.enterWith({ dependencies: deps, testContext: {} });
+    } catch (nestedError) {
+      console.error('Fallback also failed, using direct object:', nestedError);
+      als.enterWith(deps); // Last resort
+    }
+  }
 }
 
 export function clearAllLocalDeps () {
@@ -76,8 +96,25 @@ export function addLocalDeps (newDeps, supressError = false) {
 }
 export function getLocalDeps () {
   // Retrieve the current dependencies from async local storage
-  const currentDeps = als.getStore()?.get('dependencies')
-  return currentDeps || {}  // Return empty object instead of null
+  const store = als.getStore();
+  
+  // Handle different store structures that might be created in different environments
+  if (!store) {
+    return {}; // No store at all, return empty object
+  }
+  
+  // Handle Map structure (normal case)
+  if (store instanceof Map) {
+    return store.get('dependencies') || {};
+  }
+  
+  // Handle object structure (fallback case used in some environments)
+  if (typeof store === 'object' && store !== null) {
+    return store.dependencies || store || {};
+  }
+  
+  // Any other case, return empty object
+  return {};
 }
 
 export async function runWithTestContext(callback, timeout = 5000) {

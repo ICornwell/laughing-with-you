@@ -1,0 +1,25 @@
+FROM node:18-slim
+
+WORKDIR /app
+
+# Install basic tools
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set CI environment variables
+ENV CI=true
+ENV NODE_ENV=test
+ENV JEST_WORKER_ID=1
+ENV DEBUG=true
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy all project files
+COPY . .
+
+# Command to run tests
+CMD ["sh", "-c", "scripts/simulate-ci.sh both"]

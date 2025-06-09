@@ -1,11 +1,17 @@
 dist
 coverage
+logs
 
-# Ignore root node_modules only
+# Ignore node_modules
 /node_modules/
 
 # Ignore yarn.lock, because github loves npm for CI
 yarn.lock
+
+# Log files
+*.log
+logs/
+.jest-cache-ci/
 
 
 

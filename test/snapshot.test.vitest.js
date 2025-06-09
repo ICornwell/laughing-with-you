@@ -1,10 +1,25 @@
 // Test for dependency snapshots
-import { setUpLocalDeps, getLocalDeps } from '../src/asyncLocalDeps';
+import { setUpLocalDeps, getLocalDeps, runWithLocalDeps, addLocalDeps } from '../src/asyncLocalDeps';
 import { createSnapshot, withSnapshot } from '../src/depSnapshot';
+import { itWithLocalDeps } from '../src/vitest/testWrappers';
+
 
 describe('Dependency Snapshot', () => {
+  // Ensure ALS is initialized once for the test suite
+  
+
+runWithLocalDeps({}, () => {
+   
   beforeEach(() => {
-    setUpLocalDeps({
+    // First make sure we have a clean ALS state
+    const existingStore = global.__appAls.getStore();
+    if (existingStore) {
+      console.log('Snapshot test: Store already exists, cleaning up first');
+      global.__appAls.exit(() => {});
+    }
+    
+    // Ensure ALS is properly initialized with test dependencies
+    const initialDeps = {
       service1: {
         getValue: () => 'original value',
         getNumber: () => 42
@@ -13,17 +28,26 @@ describe('Dependency Snapshot', () => {
         isActive: true,
         data: ['item1', 'item2']
       }
-    });
+    };
+    
+    try {
+      addLocalDeps(initialDeps);
+    } catch (error) {
+      console.error('Snapshot test: Error in beforeEach:', error);
+      // Last resort fallback
+      throw new Error('Failed to set up initial dependencies');
+    }
   });
+})
   
-  it('should create a snapshot of current dependencies', () => {
+  itWithLocalDeps('should create a snapshot of current dependencies', () => {
     const snapshot = createSnapshot();
     expect(typeof snapshot).toBe('object');
     expect(snapshot).toHaveProperty('restore');
     expect(snapshot).toHaveProperty('getDependency');
   });
   
-  it('should restore dependencies from a snapshot', () => {
+  itWithLocalDeps('should restore dependencies from a snapshot', () => {
     // Create snapshot
     const snapshot = createSnapshot();
     
@@ -47,7 +71,7 @@ describe('Dependency Snapshot', () => {
     expect(getLocalDeps().service2.data).toEqual(['item1', 'item2']);
   });
   
-  it('should get a specific dependency from snapshot', () => {
+  itWithLocalDeps('should get a specific dependency from snapshot', () => {
     const snapshot = createSnapshot();
     const service1 = snapshot.getDependency('service1');
     
@@ -58,7 +82,7 @@ describe('Dependency Snapshot', () => {
     expect(snapshot.getDependency('nonExistent')).toBeNull();
   });
   
-  it('should calculate diff between current and snapshot', () => {
+  itWithLocalDeps('should calculate diff between current and snapshot', () => {
     const snapshot = createSnapshot();
     
     // Modify dependencies
@@ -84,7 +108,7 @@ describe('Dependency Snapshot', () => {
     expect(diff.changed).toContain('service1');
   });
   
-  it('should run function with temporary dependencies', async () => {
+  itWithLocalDeps('should run function with temporary dependencies', async () => {
     // Original state
     expect(getLocalDeps().service1.getValue()).toBe('original value');
     
@@ -105,7 +129,7 @@ describe('Dependency Snapshot', () => {
     expect(result).toBe('success');
   });
   
-  it('should restore dependencies even if function throws', async () => {
+  itWithLocalDeps('should restore dependencies even if function throws', async () => {
     expect(getLocalDeps().service1.getValue()).toBe('original value');
     
     try {
