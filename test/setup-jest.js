@@ -1,7 +1,9 @@
 // Setup file for Jest tests
-import { AsyncLocalStorage } from 'node:async_hooks';
+import { AsyncLocalStorage, executionAsyncId } from 'node:async_hooks';
 import { setUpLocalDeps } from '../src/asyncLocalDeps.js';
 import { jest } from '@jest/globals';
+
+const eid = executionAsyncId()
 
 global.jest = jest// Ensure AsyncLocalStorage is properly initialized for Jest tests
 if (!global.__appAls) {

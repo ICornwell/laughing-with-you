@@ -4,30 +4,38 @@ import { setUpLocalDeps } from '../src/asyncLocalDeps.js';
 import { jest } from '@jest/globals';
 import { ensureALSInitialized } from './testUtils/als-utils.js';
 
+import { executionAsyncId } from 'node:async_hooks';
+
 // Check if performance is available in this environment
 const hasPerformance = typeof performance !== 'undefined' && 
                       typeof performance.now === 'function';
-
+console.log(`mt module has eid: ${executionAsyncId()}`)
 describe('Mock Timer with Jest', () => {
   let mockTimer;
+  console.log(`mt describe has eid: ${executionAsyncId()}`)
   
   beforeAll(() => {
     // Initialize the async local storage with empty dependencies
+    console.log(`mt ba has eid: ${executionAsyncId()}`)
     ensureALSInitialized({});
   });
   
   beforeEach(() => {
     // Create a new mockTimer for each test
+    console.log(`mt be has eid: ${executionAsyncId()}`)
     ensureALSInitialized({}); // Ensure fresh deps for each test with proper ALS
     mockTimer = useMockTimer();
   });
   
   afterEach(() => {
+    console.log(`mt ae has eid: ${executionAsyncId()}`)
     mockTimer.uninstall();
   });
   
   describe('setTimeout mocking', () => {
+    console.log(`mt describe2 has eid: ${executionAsyncId()}`)
     test('should mock setTimeout', async () => {
+      console.log(`mt test has eid: ${executionAsyncId()}`)
       const callback = jest.fn();
       setTimeout(callback, 1000);
       
