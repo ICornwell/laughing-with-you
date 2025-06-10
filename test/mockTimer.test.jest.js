@@ -1,6 +1,7 @@
 // Test for mock timer with Jest
 import { useMockTimer } from '../src/mockTimer.js';
 import { setUpLocalDeps } from '../src/asyncLocalDeps.js';
+import { beforeAllWithLocalDeps, beforeEachWithLocalDeps, afterEachWithLocalDeps, testWithLocalDeps } from '../src/jest/testWrappers.js';
 import { jest } from '@jest/globals';
 import { ensureALSInitialized } from './testUtils/als-utils.js';
 
@@ -14,27 +15,27 @@ describe('Mock Timer with Jest', () => {
   let mockTimer;
   console.log(`mt describe has eid: ${executionAsyncId()}`)
   
-  beforeAll(() => {
+  beforeAllWithLocalDeps(() => {
     // Initialize the async local storage with empty dependencies
     console.log(`mt ba has eid: ${executionAsyncId()}`)
     ensureALSInitialized({});
   });
   
-  beforeEach(() => {
+  beforeEachWithLocalDeps(() => {
     // Create a new mockTimer for each test
     console.log(`mt be has eid: ${executionAsyncId()}`)
-    ensureALSInitialized({}); // Ensure fresh deps for each test with proper ALS
+    
     mockTimer = useMockTimer();
   });
   
-  afterEach(() => {
+  afterEachWithLocalDeps(() => {
     console.log(`mt ae has eid: ${executionAsyncId()}`)
     mockTimer.uninstall();
   });
   
   describe('setTimeout mocking', () => {
     console.log(`mt describe2 has eid: ${executionAsyncId()}`)
-    test('should mock setTimeout', async () => {
+    testWithLocalDeps('should mock setTimeout', async () => {
       console.log(`mt test has eid: ${executionAsyncId()}`)
       const callback = jest.fn();
       setTimeout(callback, 1000);
@@ -48,7 +49,7 @@ describe('Mock Timer with Jest', () => {
   });
   
   describe('setInterval mocking', () => {
-    test('should mock setInterval', () => {
+    testWithLocalDeps('should mock setInterval', () => {
       const callback = jest.fn();
       const id = setInterval(callback, 500);
       
@@ -69,7 +70,7 @@ describe('Mock Timer with Jest', () => {
   });
   
   describe('Date and performance API mocking', () => {
-    test('should mock Date.now', () => {
+    testWithLocalDeps('should mock Date.now', () => {
       const initialTime = Date.now();
       mockTimer.advanceTime(1000);
       expect(Date.now()).toBe(initialTime + 1000);
@@ -90,7 +91,7 @@ describe('Mock Timer with Jest', () => {
   });
   
   describe('Timer execution order', () => {
-    test('should execute timers in the correct order', () => {
+    testWithLocalDeps('should execute timers in the correct order', () => {
       const results = [];
       
       setTimeout(() => {
@@ -113,7 +114,7 @@ describe('Mock Timer with Jest', () => {
   });
   
   describe('runUntil functionality', () => {
-    test('should run until a specific timestamp', () => {
+    testWithLocalDeps('should run until a specific timestamp', () => {
       const callback1 = jest.fn();
       const callback2 = jest.fn();
       const callback3 = jest.fn();
@@ -135,7 +136,7 @@ describe('Mock Timer with Jest', () => {
   });
   
   describe('Nested timeouts', () => {
-    test('should handle nested timeouts correctly', () => {
+    testWithLocalDeps('should handle nested timeouts correctly', () => {
       const results = [];
       
       setTimeout(() => {
