@@ -2,5 +2,6 @@
   "jestRunIt.jestConfigPath": "./jest.config.cjs",
   "jestRunIt.customSnapshotMatchers": [
     
-  ]
+  ],
+  "jest.nodeEnv": "test"
 }

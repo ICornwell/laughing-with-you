@@ -39,6 +39,8 @@ run_jest_tests() {
     --no-cache \
     --runInBand \
     --verbose "$@"
+
+  LWY_USE_DEP_PROXIES=1
   
   jest_result=$?
   if [ $jest_result -eq 0 ]; then
@@ -58,7 +60,9 @@ run_vitest_tests() {
     --no-watch \
     --reporter verbose \
     "$@"
-  
+
+  LWY_USE_DEP_PROXIES=1
+
   vitest_result=$?
   if [ $vitest_result -eq 0 ]; then
     echo -e "${GREEN}Vitest tests passed in simple CI simulation!${NC}"

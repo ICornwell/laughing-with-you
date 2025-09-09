@@ -20,19 +20,19 @@
     "laughing-with-you": "./bin/cli.js"
   },
   "imports": {
-    "#lwy/*": "./laughing-with-you/*"
+    "#lwy/*": "./src/*"
   },
   "scripts": {
     "readme": "node-readme",
     "build": "node scripts/build.js",
     "test": "npm run test:vitest && npm run test:jest",
-    "test:vitest": "vitest run",
-    "test:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs",
-    "test:watch": "vitest",
-    "test:watch:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs --watch",
-    "test:coverage": "vitest --coverage",
-    "test:coverage:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs --coverage",
-    "test:coverage:report": "vitest --coverage --reporter=html",
+    "test:vitest": "LWY_USE_DEP_PROXIES=1 && vitest run",
+    "test:jest": "LWY_USE_DEP_PROXIES=1 && node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs",
+    "test:watch": "LWY_USE_DEP_PROXIES=1 && vitest",
+    "test:watch:jest": "LWY_USE_DEP_PROXIES=1 && node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs --watch",
+    "test:coverage": "LWY_USE_DEP_PROXIES=1 && vitest --coverage",
+    "test:coverage:jest": "LWY_USE_DEP_PROXIES=1 && node --experimental-vm-modules node_modules/jest/bin/jest.js --config=jest.config.cjs --coverage",
+    "test:coverage:report": "LWY_USE_DEP_PROXIES=1 && vitest --coverage --reporter=html",
     "test:ci:simple": "./scripts/simple-ci.sh",
     "test:ci:simple:jest": "./scripts/simple-ci.sh jest",
     "test:ci:simple:vitest": "./scripts/simple-ci.sh vitest",

@@ -19,7 +19,7 @@ export const LogLevel = {
  */
 export function createLogger(options) {
 
-  const existingLogger = getLocalDeps()?.logger;
+  const existingLogger = getLocalDeps()?.loggerInstance; // the name 'logger' refers to the module with createLogger function
   if (existingLogger && !options?.forceNew) {
     // If a logger already exists in local dependencies, return it
     console.log('Using existing logger from local dependencies');
@@ -275,7 +275,7 @@ export function createLogger(options) {
   if (!options?.doNotCache) {
     // Add the logger to local dependencies
     addLocalDeps({
-      logger: logger
+      loggerInstance: logger
     }, true);
   }
   
@@ -290,8 +290,8 @@ export function createLogger(options) {
 function getLogger() {
   const deps = getLocalDeps() || {};
 
-  if (deps.logger) {
-    return deps.logger;
+  if (deps.loggerInstance) {
+    return deps.loggerInstance;
   }
 
   return createLogger();

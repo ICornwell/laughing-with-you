@@ -214,4 +214,9 @@ export async function withE2ETestEnvironment(fn, options = {}) {
   }
 }
 
+export default {
+  createE2ETestEnvironment,
+  withE2ETestEnvironment
+};
+
 

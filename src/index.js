@@ -5,11 +5,12 @@ import asyncLocal from './asyncLocalDeps';
 import waitSignals from './waitForSignals';
 import analytics from './analytics';
 import signalTesting from './signalTesting';
-import mockTimer from './mockTimer';
-import depSnapshot from './depSnapshot';
-import resourceManager from './resourceManager';
-import logger from './logger';
-import e2e from './e2e';
+import x, { depSnapshot, logger, e2e, mockTimer, resourceManager } from './deps';
+import y, {getTestContext,getLocalDeps, setTestContext} from '../src/asyncLocalDeps'
+//import { depSnapshot } from './deps/index.js';
+//import resourceManager from './resourceManager';
+//import { logger } from './deps';
+//import { e2e } from './deps';
 
 // Proxy functionality
 import proxyDeps from './proxyDeps';
@@ -18,6 +19,8 @@ import proxyModule from './proxyModule';
 
 import jestTestWrappers from './jest/testWrappers'
 import vitestTestWrappers from './vitest/testWrappers'
+console.log(y, getTestContext, getLocalDeps, setTestContext)
+console.log(x, depSnapshot, mockTimer, logger, e2e)
 
 export default {
   // Core functionality
@@ -30,13 +33,13 @@ export default {
   ...resourceManager,
   ...logger,
   ...e2e,
-  
+
   // Proxy functionality
   ...proxyDeps,
   ...proxyModule,
   ...proxyGen,
-  
+
   // Test framework integrations
-  jest : { jestTestWrappers},
-  vitest: { vitestTestWrappers},
+  jest: { jestTestWrappers },
+  vitest: { vitestTestWrappers },
 };

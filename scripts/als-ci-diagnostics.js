@@ -154,7 +154,7 @@ try {
   // Test with robust-als.js utils
   log('\n9. Testing robust-als.js compatibility...');
   try {
-    const { createRobustALS, runWithRobustALS } = await import('../test/testUtils/robust-als.js');
+    const { createRobustALS, runWithRobustALS } = await import('../test/vitest/testUtils/robust-als.js');
     const robustAls = createRobustALS();
     log('  - Created robust ALS instance ✅');
     

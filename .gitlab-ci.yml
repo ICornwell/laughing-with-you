@@ -35,7 +35,7 @@ test:vitest:
   needs:
     - setup
   script:
-    - npm run test:vitest
+    - LWY_USE_DEP_PROXIES=1 && npm run test:vitest
   artifacts:
     when: always
     paths:
@@ -48,7 +48,7 @@ test:jest:
   needs:
     - setup
   script:
-    - npm run test:jest:ci-config
+    - LWY_USE_DEP_PROXIES=1 && npm run test:jest:ci-config
   artifacts:
     when: always
     reports:

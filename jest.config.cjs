@@ -1,15 +1,15 @@
 // CommonJS version of Jest configuration
 module.exports = {
   // Use babel to transform ES modules to CommonJS for Jest
-  transform: {
-    '^.+\\.[t|j]sx?$': 'babel-jest',
-  },
+  transform: {}, // no transforms!
+  //  '^.+\\.[t|j]sx?$': 'babel-jest',
+  //},
   
   // Setup test environment
   testEnvironment: 'node',
   
   // Setup files to run before tests
-  setupFilesAfterEnv: ['<rootDir>/test/setup-jest.js'],
+  setupFilesAfterEnv: ['<rootDir>/test/jest/setup-jest.js'],
   
   // Test patterns
   testMatch: [
@@ -23,6 +23,7 @@ module.exports = {
     "/node_modules/",
     "/dist/",
     "/.git/",
+    "/test/vitest",
     "\\.test\\.vitest\\.[jt]s?(x)$"
   ],
   
@@ -32,11 +33,11 @@ module.exports = {
   },
   
   // Handle ESM correctly
-  extensionsToTreatAsEsm: ['.jsx', '.ts', '.tsx'],
+  extensionsToTreatAsEsm: [ '.jsx', '.ts', '.tsx'],
   
   // Ensure CommonJS interoperability
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)'
+    'src/.*\\.js$|node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)'
   ],
   
   // Collect coverage from these directories

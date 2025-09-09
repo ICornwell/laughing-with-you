@@ -11,10 +11,11 @@ export default defineConfig({
     ],
     exclude: [
       'test/**/*.test.jest.js',
+      'test/jest/**/*.js'
     ],
     globals: true,
     environment: 'node',
-    setupFiles: ['./test/setup-vitest.js'],
+    // setupFiles: ['./test/setup-vitest.js'],
     coverage: {
       reporter: ['text', 'html', 'json', 'lcov'],
     },
