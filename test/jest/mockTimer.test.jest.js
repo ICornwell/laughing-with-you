@@ -21,18 +21,19 @@ describe('Mock Timer with Jest', () => {
     // Initialize the async local storage with empty dependencies
     console.log(`mt ba has eid: ${executionAsyncId()}`);
     alsUtils.ensureALSInitialized({});
-  });
+  }, -1);
   beforeEachWithLocalDeps(() => {
     // Create a new mockTimer for each test
-    console.log(`mt be has eid: ${executionAsyncId()}`);
+    console.log(`mt be has eid: ${executionAsyncId()}, ts:${Date.now() }`);
     const mockTimer = useMockTimer();
     mockTimer.install(); // Install the mock timer - adds to localDeps
-  });
+    console.log(`be done, eid: ${executionAsyncId()}, ts:${Date.now() }`);
+  }, -1);
   afterEachWithLocalDeps(() => {
     console.log(`mt ae has eid: ${executionAsyncId()}`);
     const mockTimer = getLocalDeps().mockTimer;
     mockTimer.uninstall();
-  });
+  },-1);
   describe('setTimeout mocking', () => {
     console.log(`mt describe2 has eid: ${executionAsyncId()}`);
     testWithLocalDeps('should mock setTimeout', async () => {

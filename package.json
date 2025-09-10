@@ -5,16 +5,16 @@
   "main": "lib/index.js",
   "type": "module",
   "exports": {
-    ".": "./lib/index.js",
-    "./jest": "./lib/jest/index.js",
-    "./vite": "./lib/vite/index.js",
-    "./analytics": "./lib/analytics.js",
-    "./signal": "./lib/signalTesting.js",
-    "./timer": "./lib/mockTimer.js",
-    "./snapshot": "./lib/depSnapshot.js",
-    "./resource": "./lib/resourceManager.js",
-    "./logger": "./lib/logger.js",
-    "./e2e": "./lib/e2e.js"
+    ".": { "import": "./lib/index.js", "require": "./lib/index.cjs" },
+    "./jest": { "import": "./lib/jest/index.js", "require": "./lib/jest/index.cjs" },
+    "./vite": { "import": "./lib/vite/index.js", "require": "./lib/vite/index.cjs" },
+    "./analytics": { "import": "./lib/analytics.js", "require": "./lib/analytics.cjs" },
+    "./signal": { "import": "./lib/signalTesting.js", "require": "./lib/signalTesting.cjs" },
+    "./timer": { "import": "./lib/mockTimer.js", "require": "./lib/mockTimer.cjs" },
+    "./snapshot": { "import": "./lib/depSnapshot.js", "require": "./lib/depSnapshot.cjs" },
+    "./resource": { "import": "./lib/resourceManager.js", "require": "./lib/resourceManager.cjs" },
+    "./logger": { "import": "./lib/logger.js", "require": "./lib/logger.cjs" },
+    "./e2e": { "import": "./lib/e2e.js", "require": "./lib/e2e.cjs" }
   },
   "bin": {
     "laughing-with-you": "./bin/cli.js"

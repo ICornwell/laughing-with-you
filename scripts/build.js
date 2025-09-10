@@ -1,7 +1,7 @@
 // @ts-check
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
-import { execSync } from 'child_process';
+import { exec, execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -16,14 +16,28 @@ function build() {
   console.log('Building library...');
   
   // Create lib directory
-  const libDir = join(__dirname, 'lib');
+  const libDir = join(path.dirname(__dirname), 'lib');
+  console.log('Lib directory:', libDir);
   if (!existsSync(libDir)) {
+    console.log('Creating lib directory...');
     mkdirSync(libDir, { recursive: true });
+  } else {
+    console.log('Lib directory already exists, cleaning up...');
+    execSync('rm -rf lib/*', { stdio: 'inherit' });
   }
   
   // Copy source files
-  execSync('cp -r src/* lib/', { stdio: 'inherit' });
-  
+  execSync('cp -r ./src/* ./lib/', { stdio: 'inherit' });
+try{
+  const bashCmd = 'find ./srccjs -maxdepth 1 -iname "*.js" -exec bash -c \'cp -- $1 "./lib/`basename $1 .js`.cjs"\' bash {} \\;';
+  console.log('Renaming .js files to .cjs with command:', bashCmd);
+  execSync('rm -rf lib/jest/*', { stdio: 'inherit' });
+  execSync(bashCmd, { stdio: 'inherit' });
+  execSync('find ./srccjs/deps -maxdepth 1 -iname "*.js" -exec bash -c \'cp -- $1 "./lib/deps/`basename $1 .js`.cjs"\' bash {} \\;', { stdio: 'inherit' });
+  execSync('find ./srccjs/jest -maxdepth 1 -iname "*.js" -exec bash -c \'cp -- $1 "./lib/jest/`basename $1 .js`.cjs"\' bash {} \\;', { stdio: 'inherit' });
+}catch(e){
+  console.warn(e);
+}
   // Create type declarations
   createTypeDeclarations();
   

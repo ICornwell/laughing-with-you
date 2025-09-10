@@ -36,6 +36,7 @@ run_jest_tests() {
   NODE_OPTIONS="--no-warnings --unhandled-rejections=strict" \
   node node_modules/jest/bin/jest.js \
     --config=jest.config.cjs \
+    --detectOpenHandles \
     --no-cache \
     --runInBand \
     --verbose "$@"
