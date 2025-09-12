@@ -32,8 +32,8 @@ jobs:
       - name: Run Vitest tests
         run: npm run test:vitest
       
-      - name: Run Jest tests with CI configuration
-        run: npm run test:jest:ci-config
+      - name: Run Jest tests
+        run: npm run test:jest
       
       - name: Run AsyncLocalStorage diagnostics
         run: |
