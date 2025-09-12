@@ -3,7 +3,7 @@
 var _nodeAsync_hooks = require("node:async_hooks");
 var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.cjs");
 var _alsUtils = require("./testUtils/als-utils.cjs");
-require("../scripts/als-patch.cjs");
+
 var _globals = require("@jest/globals");
 // setup-jest-ci.js - Special setup file for CI environments
 

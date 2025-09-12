@@ -1,9 +1,9 @@
 "use strict";
 
-const logger = require("../../srccjs/deps/logger");
-const alsUtils = require("./testUtils/als-utils");
+const logger = require("../../srccjs/deps/logger.cjs");
+const alsUtils = require("./testUtils/als-utils.cjs");
 const asyncLocalDeps = require("../../srccjs/asyncLocalDeps");
-const { beforeEachWithLocalDeps, itWithLocalDeps } = require("../../srccjs/jest/testWrappers");
+const { beforeEachWithLocalDeps, itWithLocalDeps } = require("../../srccjs/jest/testWrappers.cjs");
 
 const resourceManager = require("../../srccjs/resourceManager.cjs");
 

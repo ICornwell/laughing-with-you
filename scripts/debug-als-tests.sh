@@ -30,23 +30,19 @@ TEST_TYPE="${1:-jest}"
 case "$TEST_TYPE" in
   "jest")
     echo -e "${YELLOW}Running Jest tests with ALS debugging${NC}"
-    NODE_OPTIONS="--require ./scripts/als-debug-patch.js" \
-      npx jest --config=jest.config.cjs --runInBand --no-cache "${@:2}"
+    npx jest --config=jest.config.cjs --runInBand --no-cache "${@:2}"
     ;;
   "vitest")
     echo -e "${YELLOW}Running Vitest tests with ALS debugging${NC}"
-    NODE_OPTIONS="--require ./scripts/als-debug-patch.js" \
-      npx vitest run --no-threads "${@:2}"
+    npx vitest run --no-threads "${@:2}"
     ;;
   "snapshot")
     echo -e "${YELLOW}Running snapshot tests with ALS debugging${NC}"
-    NODE_OPTIONS="--require ./scripts/als-debug-patch.js" \
-      npx jest test/snapshot.test.js --config=jest.config.cjs --runInBand --no-cache
+    npx jest test/snapshot.test.js --config=jest.config.cjs --runInBand --no-cache
     ;;
   "signal")
     echo -e "${YELLOW}Running signal tests with ALS debugging${NC}"
-    NODE_OPTIONS="--require ./scripts/als-debug-patch.js" \
-      npx jest test/signalTesting.test.jest.js --config=jest.config.cjs --runInBand --no-cache
+    npx jest test/signalTesting.test.jest.js --config=jest.config.cjs --runInBand --no-cache
     ;;
   *)
     echo -e "${YELLOW}Invalid test type: ${TEST_TYPE}${NC}"
