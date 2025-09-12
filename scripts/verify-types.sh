@@ -20,9 +20,10 @@ if ! command -v tsc &> /dev/null; then
 fi
 
 # Create a temporary TypeScript file to verify the types
-TMP_DIR=$(mktemp -d)
+TMP_DIR=$(mktemp -d -p .)
 echo -e "${BLUE}Creating temporary TypeScript test file...${NC}"
-
+echo -e "${BLUE} current dir: $(pwd)${NC}"
+echo -e "${BLUE} tmp dir: $TMP_DIR${NC}"
 cat > "$TMP_DIR/type-test.ts" << 'EOF'
 // Test TypeScript definitions for robust-als.d.ts
 import { 
@@ -30,7 +31,7 @@ import {
   runWithRobustALS, 
   getDepsRobustly, 
   setDepsRobustly 
-} from '../test/testUtils/robust-als';
+} from '../test/vitest/testUtils/robust-als.js';
 
 // Test createRobustALS
 const als = createRobustALS();
@@ -56,7 +57,7 @@ import {
   withALS,
   describeWithALS,
   cleanupALS
-} from '../test/testUtils/als-utils';
+} from '../test/vitest/testUtils/als-utils.js';
 
 // Test ensureALSInitialized
 const initialDeps = ensureALSInitialized({ key: 'value' });
