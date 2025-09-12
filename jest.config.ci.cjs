@@ -18,7 +18,7 @@ module.exports = {
   ...baseConfig,
   
   // Use CI-specific setup file
-  setupFilesAfterEnv: ['<rootDir>/test/setup-jest-ci.cjs'],
+  setupFilesAfterEnv: ['<rootDir>/test/jest/setup-jest-ci.cjs'],
   
   // Run tests in sequence to avoid parallel execution issues
   maxWorkers: 1,
