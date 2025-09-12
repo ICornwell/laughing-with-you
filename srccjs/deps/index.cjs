@@ -1,16 +1,16 @@
-const realLogger  = require( '../logger.js');
+const realLogger  = require( '../logger.cjs');
 const realPath  = require('path');
-const realDepSnapshot  = require('../depSnapshot.js');
-const realE2e  = require('../e2e.js');
-const realMockTimer  = require('../mockTimer.js');
-const realResourceManager  = require( '../resourceManager.js');
+const realDepSnapshot  = require('../depSnapshot.cjs');
+const realE2e  = require('../e2e.cjs');
+const realMockTimer  = require('../mockTimer.cjs');
+const realResourceManager  = require( '../resourceManager.cjs');
 
-const proxyLogger  = require( './logger.js');
-const proxyPath  = require('./path.js');
-const proxyDepSnapshot  = require('./snapshot.js');
-const proxyE2e  = require('./e2e.js');
-const proxyMockTimer  = require('./mockTimer.js');
-const proxyResourceManager = require('./resourceManager.js');
+const proxyLogger  = require( './logger.cjs');
+const proxyPath  = require('./path.cjs');
+const proxyDepSnapshot  = require('./snapshot.cjs');
+const proxyE2e  = require('./e2e.cjs');
+const proxyMockTimer  = require('./mockTimer.cjs');
+const proxyResourceManager = require('./resourceManager.cjs');
 
 // currently switched into test mode!
 const useMocks = process.env.LWY_USE_DEP_PROXIES ?? true // set to false to use real dependencies

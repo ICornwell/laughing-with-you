@@ -8,7 +8,7 @@ exports.describeWithALS = describeWithALS;
 exports.ensureALSInitialized = ensureALSInitialized;
 exports.withALS = withALS;
 var _nodeAsync_hooks = require("node:async_hooks");
-var _asyncLocalDeps = require("../../../srccjs/asyncLocalDeps.js");
+var _asyncLocalDeps = require("../../../srccjs/asyncLocalDeps.cjs");
 /**
  * Helper for Jest tests to properly handle AsyncLocalStorage initialization
  * This helper ensures AsyncLocalStorage is properly set up for Jest tests

@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "description": "Extensions for Jest and Vitest for dependency injection and test wrappers",
   "main": "lib/index.js",
-  "type": "module",
+  
   "exports": {
     ".": { "import": "./lib/index.js", "require": "./lib/index.cjs" },
-    "./jest": { "import": "./lib/jest/index.js", "require": "./lib/jest/index.cjs" },
-    "./vite": { "import": "./lib/vite/index.js", "require": "./lib/vite/index.cjs" },
+    "./jest": { "require": "./lib/jest/index.cjs" },
+    "./vite": { "import": "./lib/vite/index.js" },
     "./analytics": { "import": "./lib/analytics.js", "require": "./lib/analytics.cjs" },
     "./signal": { "import": "./lib/signalTesting.js", "require": "./lib/signalTesting.cjs" },
     "./timer": { "import": "./lib/mockTimer.js", "require": "./lib/mockTimer.cjs" },

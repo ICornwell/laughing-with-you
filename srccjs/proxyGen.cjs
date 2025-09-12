@@ -35,7 +35,7 @@ module.exports = proxyDep(${name}, '${name}');
   }
 
   // Create index file
-  const indexPath = (0, _path.join)(targetDir, 'index.js');
+  const indexPath = (0, _path.join)(targetDir, 'index.cjs');
   const indexContent = deps.map(name => `exports.${name} = require('./${name}');`).join('\n');
   (0, _fs.writeFileSync)(indexPath, `// Auto-generated index for proxied dependencies
 ${indexContent}

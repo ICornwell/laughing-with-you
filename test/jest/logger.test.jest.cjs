@@ -1,10 +1,10 @@
 "use strict";
 
-const asyncLocalDeps = require("../../srccjs/asyncLocalDeps.js");
+const asyncLocalDeps = require("../../srccjs/asyncLocalDeps.cjs");
 const globals = require("@jest/globals");
-const alsUtils = require("./testUtils/als-utils.js");
-const waitForSignals = require("../../srccjs/waitForSignals.js");
-const {createLogger, LogLevel} = require("../../srccjs/logger.js");
+const alsUtils = require("./testUtils/als-utils.cjs");
+const waitForSignals = require("../../srccjs/waitForSignals.cjs");
+const {createLogger, LogLevel} = require("../../srccjs/logger.cjs");
 describe('Logger', () => {
   async function createLoggerAndSpy(includeConsoleSpy = true) {
     

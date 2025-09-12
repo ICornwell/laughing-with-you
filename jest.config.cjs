@@ -9,13 +9,13 @@ module.exports = {
   testEnvironment: 'node',
   
   // Setup files to run before tests
-  setupFilesAfterEnv: ['<rootDir>/test/jest/setup-jest.js'],
+  setupFilesAfterEnv: ['<rootDir>/test/jest/setup-jest.cjs'],
   
   // Test patterns
   testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(test|spec).[jt]s?(x)",
-    "**/?(*.)+(test.jest).[jt]s?(x)"
+    "**/__tests__/**/*.cjs?(x)",
+    "**/?(*.)+(test|spec).cjs?(x)",
+    "**/?(*.)+(test.jest).cjs?(x)"
   ],
   
   // Exclude vitest-specific tests
@@ -37,12 +37,12 @@ module.exports = {
   
   // Ensure CommonJS interoperability
   transformIgnorePatterns: [
-    'src/.*\\.js$|node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)'
+    'srccjs/.*\\.cjs$|node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)'
   ],
   
   // Collect coverage from these directories
   collectCoverageFrom: [
-    "src/**/*.{js,jsx}",
+    "srccjs/**/*.{cjs,jsx}",
     "!**/node_modules/**",
     "!**/vendor/**"
   ],

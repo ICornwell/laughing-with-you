@@ -1,14 +1,14 @@
 "use strict";
 
-var {useMockTimer} = require("../../srccjs/mockTimer.js");
+var {useMockTimer} = require("../../srccjs/mockTimer.cjs");
 
 var {testWithLocalDeps,
    beforeAllWithLocalDeps, beforeEachWithLocalDeps,
-  afterEachWithLocalDeps} = require("../../srccjs/jest/testWrappers.js");
+  afterEachWithLocalDeps} = require("../../srccjs/jest/testWrappers.cjs");
 var globals = require("@jest/globals");
-var alsUtils = require("./testUtils/als-utils.js");
+var alsUtils = require("./testUtils/als-utils.cjs");
 var {executionAsyncId} = require("node:async_hooks");
-const { getLocalDeps } = require("../../srccjs/asyncLocalDeps.js");
+const { getLocalDeps } = require("../../srccjs/asyncLocalDeps.cjs");
 // Test for mock timer with Jest
 
 // Check if performance is available in this environment

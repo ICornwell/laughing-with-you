@@ -1,7 +1,7 @@
 "use strict";
 
-const logger = require("../logger.js");
-const proxyDep = require("../../srccjs/proxyDeps.js");
+const logger = require("../logger.cjs");
+const proxyDep = require("../../srccjs/proxyDeps.cjs");
 
 console.log(logger);
 console.log(proxyDep);

@@ -1,7 +1,7 @@
 "use strict";
 
 var _nodeAsync_hooks = require("node:async_hooks");
-var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.js");
+var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.cjs");
 /**
  * Diagnostics for understanding Jest's AsyncLocalStorage behavior
  * This test file explores how AsyncLocalStorage behaves across different test phases

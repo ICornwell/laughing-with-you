@@ -1,7 +1,7 @@
 "use strict";
 
 var _nodeAsync_hooks = require("node:async_hooks");
-var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.js");
+var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.cjs");
 var _globals = require("@jest/globals");
 // Setup file for Jest tests
 

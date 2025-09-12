@@ -5,7 +5,7 @@ const alsUtils = require("./testUtils/als-utils");
 const asyncLocalDeps = require("../../srccjs/asyncLocalDeps");
 const { beforeEachWithLocalDeps, itWithLocalDeps } = require("../../srccjs/jest/testWrappers");
 
-const resourceManager = require("../../srccjs/resourceManager.js");
+const resourceManager = require("../../srccjs/resourceManager.cjs");
 
 // Use the wrapped 'it' function for more 'usual' syntax
 const it = itWithLocalDeps

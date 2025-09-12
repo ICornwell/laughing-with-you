@@ -1,9 +1,9 @@
 "use strict";
 
-var _testWrappers = require("../../srccjs/jest/testWrappers.js");
-var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.js");
+var _testWrappers = require("../../srccjs/jest/testWrappers.cjs");
+var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.cjs");
 var _globals = require("@jest/globals");
-var _alsUtils = require("./testUtils/als-utils.js");
+var _alsUtils = require("./testUtils/als-utils.cjs");
 // Test for Jest-specific wrapper functionality
 
 // Jest-specific test functionality

@@ -1,8 +1,8 @@
 "use strict";
 
-var _signalTesting = require("../../srccjs/signalTesting.js");
-var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.js");
-var _alsUtils = require("./testUtils/als-utils.js");
+var _signalTesting = require("../../srccjs/signalTesting.cjs");
+var _asyncLocalDeps = require("../../srccjs/asyncLocalDeps.cjs");
+var _alsUtils = require("./testUtils/als-utils.cjs");
 var _globals = require("@jest/globals");
 /**
  * Example of how to use the jest-als-helper to make tests work with proper ALS initialization
