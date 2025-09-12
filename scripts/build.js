@@ -29,13 +29,10 @@ function build() {
   // Copy source files
   execSync('cp -r ./src/* ./lib/', { stdio: 'inherit' });
 try{
-  const bashCmd = 'find ./srccjs -maxdepth 1 -iname "*.js" -exec bash -c \'cp -- $1 "./lib/`basename $1 .js`.cjs"\' bash {} \\;';
-  console.log('Renaming .js files to .cjs with command:', bashCmd);
+
   execSync('rm -rf lib/jest/*', { stdio: 'inherit' });
-  execSync(bashCmd, { stdio: 'inherit' });
-  execSync('find ./srccjs/deps -maxdepth 1 -iname "*.js" -exec bash -c \'cp -- $1 "./lib/deps/`basename $1 .js`.cjs"\' bash {} \\;', { stdio: 'inherit' });
-  execSync('find ./srccjs/jest -maxdepth 1 -iname "*.js" -exec bash -c \'cp -- $1 "./lib/jest/`basename $1 .js`.cjs"\' bash {} \\;', { stdio: 'inherit' });
-}catch(e){
+  execSync('cp -r ./srccjs/* ./lib', { stdio: 'inherit' });
+  }catch(e){
   console.warn(e);
 }
   // Create type declarations

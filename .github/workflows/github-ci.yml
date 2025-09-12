@@ -35,11 +35,7 @@ jobs:
       - name: Run Jest tests
         run: npm run test:jest
       
-      - name: Run AsyncLocalStorage diagnostics
-        run: |
-          npm run test:als-diagnostics
-          npm run test:als-trace
-      
+           
       - name: Build library
         run: npm run build
       

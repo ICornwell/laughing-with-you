@@ -2,6 +2,7 @@
   "name": "laughing-with-you",
   "version": "0.1.0",
   "description": "Extensions for Jest and Vitest for dependency injection and test wrappers",
+  "type": "module",
   "main": "lib/index.js",
   
   "exports": {
